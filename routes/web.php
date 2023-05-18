@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\DiaryController;
+
+Route::get('/', [DiaryController::class, 'index']);
+Route::get('/diary', [DiaryController::class, 'index']);
+Route::get('/diary/detail/{id}', [DiaryController::class, 'detail']);
+Route::post('/diary', [DiaryController::class, 'post']);
+Route::delete('/diary/{id}', [DiaryController::class, 'delete']);
+Route::get('/diary/create', [DiaryController::class, 'create']);

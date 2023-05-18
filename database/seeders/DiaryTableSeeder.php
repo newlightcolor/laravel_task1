@@ -16,6 +16,36 @@ class DiaryTableSeeder extends Seeder
     {
         $diaries = [
             [
+                'content' => 'The purple elephants danced gracefully on the moonlit marshmallow clouds.',
+                'image_url' => NULL,
+                'small_image_url' => NULL,
+                'local_image_path' => 'storage/images/diary_images/default/no_image.png',
+                'local_small_image_path' => 'storage/images/diary_images/default/no_image.png',
+                'original_image_name' => 'no_image.png',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+            [
+                'content' => 'Sparkling unicorns sipped cosmic lemonade from invisible goblets.',
+                'image_url' => NULL,
+                'small_image_url' => NULL,
+                'local_image_path' => NULL,
+                'local_small_image_path' => NULL,
+                'original_image_name' => NULL,
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+            [
+                'content' => 'The polka-dotted giraffe serenaded the giggling broccoli with a ukulele.',
+                'image_url' => NULL,
+                'small_image_url' => NULL,
+                'local_image_path' => NULL,
+                'local_small_image_path' => NULL,
+                'original_image_name' => NULL,
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+            [
                 'content' => 'Plant enthusiasts thrive in the nurturing embrace of nature, finding joy and tranquility amidst their verdant companions.',
                 'image_url' => NULL,
                 'small_image_url' => NULL,
