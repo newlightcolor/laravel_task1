@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('diary', function (Blueprint $table) {
             $table->id();
-            $table->text('comment')->nullable(true);
+            $table->text('content')->nullable(true);
             $table->text('image_url')->nullable(true);
-            $table->text('image_name')->nullable(true);
+            $table->text('small_image_url')->nullable(true);
+            $table->text('local_image_path')->nullable(true);
+            $table->text('local_small_image_path')->nullable(true);
+            $table->text('original_image_name')->nullable(true);
             $table->tinyInteger('delete_flag')->default(0);
             $table->timestamps();
         });
