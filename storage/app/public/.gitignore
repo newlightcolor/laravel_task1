@@ -1,2 +1,5 @@
-*
 !.gitignore
+!images/
+!images/diary_images/
+!images/diary_images/default/
+!images/diary_images/default/*
