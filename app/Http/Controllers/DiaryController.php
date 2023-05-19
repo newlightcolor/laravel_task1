@@ -123,7 +123,7 @@ class DiaryController extends Controller
 
         $old_diary = Diary::where('id', $request->input('id'))->first();
         if(!$old_diary){
-            Validator::errors()->add('', '日記が存在しません。');
+            return redirect('/');
         }
         
         $stored_file_alias = $this->store_file($request, 'diary_image', 'images/diary_images/');
