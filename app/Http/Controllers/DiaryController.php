@@ -89,7 +89,7 @@ class DiaryController extends Controller
     public function post(Request $request)
     {
         $request->validate([
-            'diary_image' => 'required',
+            'diary_image' => 'required|image',
             'diary_content' => 'required'
         ]);
         
@@ -117,7 +117,7 @@ class DiaryController extends Controller
 
         $request->validate([
             'id' => 'required|numeric',
-            'diary_image' => 'required',
+            'diary_image' => 'required|image',
             'diary_content' => 'required'
         ]);
 
