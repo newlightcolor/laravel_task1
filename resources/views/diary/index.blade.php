@@ -16,6 +16,8 @@
     </div>
     @endif
 
+    <input type="hidden" id="select_page" value="{{$page_nation['select_page']}}">
+    
     <div class="diary-container">
 
         @foreach ($diaries as $diary)
@@ -103,7 +105,8 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 }).done(function( data ) {
-                    location.href = '{{url("/")}}'
+                    select_page = $("#select_page").val();
+                    location.href = '{{url("/")}}?&select_page='+select_page;
                 });
             });
 
