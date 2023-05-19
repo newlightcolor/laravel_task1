@@ -8,8 +8,18 @@ Laravel10
 
 ## Requirement
 ***
-#### 環境変数の設定
-- .env.developをそのまま.envに変更して使えます。
+### 実行環境の想定
+https://github.com/newlightcolor/LEMP-8.1
+
+### 初期設定
+**installation.shを実行**
+```
+sh installation.sh
+```
+- .envファイル作成
+- composer パッケージインストール
+- ファイル権限を全員に付与
+
 
 ## Usage
 ***
