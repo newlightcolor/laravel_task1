@@ -93,13 +93,13 @@ class DiaryController extends Controller
             'diary_content' => 'required'
         ]);
         
-        $stored_file_path = $this->store_file('diary_image', 'public/images/diary_images');
+        $stored_file_alias = $this->store_file($request, 'diary_image', 'images/diary_images/');
 
         $diary = [];
         $diary['content'] = $request->input('diary_content');
-        $diary['local_image_path'] = $stored_file_path;
-        $diary['local_small_image_path'] = $stored_file_path;
-        $diary['original_image_name'] = $this->input('diary_image');
+        $diary['local_image_path'] = $stored_file_alias;
+        $diary['local_small_image_path'] = $stored_file_alias;
+        $diary['original_image_name'] = $request->input('diary_image');
         $diary['created_at'] = new DateTime();
         $diary['updated_at'] = new DateTime();
 
