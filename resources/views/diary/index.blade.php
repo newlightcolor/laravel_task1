@@ -6,6 +6,16 @@
 
 @section('content')
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="diary-container">
 
         @foreach ($diaries as $diary)
@@ -30,6 +40,7 @@
                         Date: {{$diary->created_at}} 
                     </div>
                     <div class="diary-action-menu">
+                        <span class="material-symbols-outlined edit-diary" data-id="{{$diary->id}}">edit</span>
                         <span class="material-symbols-outlined show-diary-detail" data-id="{{$diary->id}}">visibility</span>
                         <span class="material-symbols-outlined delete-diary" data-id="{{$diary->id}}">delete</span>
                     </div>
@@ -94,6 +105,13 @@
                 }).done(function( data ) {
                     location.href = '{{url("/")}}'
                 });
+            });
+
+            //日記編集
+            $('.edit-diary').off('click');
+            $('.edit-diary').on('click', function(){
+                let url = '{{url("/")}}/diary/edit?id='+$(this).data('id');
+                location.href = url;
             });
 
             //日記追加カードの表示切り替え

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Diary;
 use Datetime;
 
@@ -66,6 +68,22 @@ class DiaryController extends Controller
     }
 
     /**
+     * 編集
+     */
+    public function edit(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|numeric',
+        ]);
+
+        $diary = Diary::where('id', $request->input('id'))->first();
+        
+        $view_args['diary'] = $diary;
+        return view('diary.edit', $view_args);
+    }
+
+    /**
      * 登録
      */
     public function post(Request $request)
@@ -75,23 +93,59 @@ class DiaryController extends Controller
             'diary_content' => 'required'
         ]);
         
-        $uploaded_image = $request->file('diary_image');
-        $original_image_name = $uploaded_image->getClientOriginalName();
-        $original_image_ext = $uploaded_image->getClientOriginalExtension();
-        $generated_file_name = uniqid('', true).'.'.$original_image_ext;
-
-        $uploaded_image->storeAs('public/images/diary_images', $generated_file_name);
+        $stored_file_path = $this->store_file('diary_image', 'public/images/diary_images');
 
         $diary = [];
         $diary['content'] = $request->input('diary_content');
-        $diary['local_image_path'] = 'storage/images/diary_images/'.$generated_file_name;
-        $diary['local_small_image_path'] = 'storage/images/diary_images/'.$generated_file_name;
-        $diary['original_image_name'] = $original_image_name.'.'.$original_image_ext;
+        $diary['local_image_path'] = $stored_file_path;
+        $diary['local_small_image_path'] = $stored_file_path;
+        $diary['original_image_name'] = $this->input('diary_image');
         $diary['created_at'] = new DateTime();
         $diary['updated_at'] = new DateTime();
 
         $diaryModel = new Diary();
         $diaryModel->insert($diary);
+
+        return redirect('/');
+    }
+
+    /**
+     * 更新
+     */
+    public function put(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|numeric',
+            'diary_image' => 'required',
+            'diary_content' => 'required'
+        ]);
+
+        $old_diary = Diary::where('id', $request->input('id'))->first();
+        if(!$old_diary){
+            Validator::errors()->add('', '日記が存在しません。');
+        }
+        
+        $stored_file_alias = $this->store_file($request, 'diary_image', 'images/diary_images/');
+
+        $diary = [];
+        $diary['content'] = $request->input('diary_content');
+        $diary['local_image_path'] = $stored_file_alias;
+        $diary['local_small_image_path'] = $stored_file_alias;
+        $diary['original_image_name'] = $request->input('diary_image');
+        $diary['created_at'] = new DateTime();
+        $diary['updated_at'] = new DateTime();
+
+        $diaryModel = new Diary();
+        $diaryModel = $diaryModel->where('id', $request->input('id'));
+        $diaryModel->update($diary);
+
+        //古い画像の削除
+        if($old_diary->local_image_path && strpos($old_diary->local_image_path, '/default/') === FALSE){
+            $old_image_name = explode('/', $old_diary->local_image_path);
+            $old_image_name = $old_image_name[array_key_last($old_image_name)];
+            Storage::delete('public/images/diary_images/'.$old_image_name);
+        }
 
         return redirect('/');
     }
@@ -105,5 +159,21 @@ class DiaryController extends Controller
         $diary = $diary->where('id', $id);
         $diary = $diary->delete();
         return true;
+    }
+
+    /**
+     * ファイル保存
+     */
+    private function store_file($request, $file_name = NULL, $store_dir = NULL){
+
+        $uploaded_file = $request->file($file_name);
+        $original_file_name = $uploaded_file->getClientOriginalName();
+        $original_file_ext = $uploaded_file->getClientOriginalExtension();
+        $generated_file_name = uniqid('', true).'.'.$original_file_ext;
+
+        $uploaded_file->storeAs('public/'.$store_dir, $generated_file_name);
+        
+        $file_alias_path = 'storage/'.$store_dir.$generated_file_name;
+        return $file_alias_path;
     }
 }

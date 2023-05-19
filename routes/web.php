@@ -18,6 +18,8 @@ use App\Http\Controllers\DiaryController;
 Route::get('/', [DiaryController::class, 'index']);
 Route::get('/diary', [DiaryController::class, 'index']);
 Route::get('/diary/detail/{id}', [DiaryController::class, 'detail']);
+Route::get('/diary/edit', [DiaryController::class, 'edit']);
 Route::post('/diary', [DiaryController::class, 'post']);
+Route::post('/diary/update', [DiaryController::class, 'put']);
 Route::delete('/diary/{id}', [DiaryController::class, 'delete']);
 Route::get('/diary/create', [DiaryController::class, 'create']);
