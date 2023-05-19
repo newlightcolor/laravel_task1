@@ -155,9 +155,20 @@ class DiaryController extends Controller
      */
     public function delete($id)
     {
+
         $diary = new Diary();
         $diary = $diary->where('id', $id);
-        $diary = $diary->delete();
+
+        $delete_diary = $diary->first();
+        $diary->delete();
+
+        //古い画像の削除
+        if($delete_diary->local_image_path && strpos($delete_diary->local_image_path, '/default/') === FALSE){
+            $old_image_name = explode('/', $delete_diary->local_image_path);
+            $old_image_name = $old_image_name[array_key_last($old_image_name)];
+            Storage::delete('public/images/diary_images/'.$old_image_name);
+        }
+        
         return true;
     }
 
